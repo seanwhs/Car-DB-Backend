@@ -2,6 +2,7 @@
 package cards.backend.model;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -11,13 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Owner {
 
@@ -27,14 +26,17 @@ public class Owner {
 
     private String firstName, lastName;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "car_owner", joinColumns = {
-            @JoinColumn(name = "ownerid") }, inverseJoinColumns = {
-                    @JoinColumn(name = "id") })
-    private Set<Car> cars = new HashSet<Car>();
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "owner_car", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "car_id"))
+    private Set<Car> cars = new HashSet<>();
 
     public Owner(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ownerId); // Or whatever field you want to use for hashing
     }
 }

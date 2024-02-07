@@ -18,4 +18,5 @@ public interface CarRepository extends CrudRepository<Car, Long> {
     List<Car> findByBrandAndModel(String brand, String model);
     List<Car> findByBrandOrColor(String brand, String color);
 
+    
 }
