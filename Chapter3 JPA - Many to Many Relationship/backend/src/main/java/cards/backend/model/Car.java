@@ -1,13 +1,13 @@
 //Car.java
 package cards.backend.model;
+import java.util.HashSet;
+import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,9 +28,8 @@ public class Car {
     private int modelYear, price;
 
     // Each car belongs to one owner
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="owner")
-    private Owner owner;
+    @ManyToMany(mappedBy = "cars")
+    private Set<Owner> owners = new HashSet<>();
 
     public Car(String brand, String model, String color, String registrationNumber, int modelYear,
             int price, Owner owner) {
@@ -40,8 +39,6 @@ public class Car {
         this.registrationNumber = registrationNumber;
         this.modelYear = modelYear;
         this.price = price;
-        this.owner=owner;
+        this.owners.add(owner);
     }
-
-    
 }

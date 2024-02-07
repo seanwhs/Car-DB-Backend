@@ -8,8 +8,8 @@ import cards.backend.model.Owner;
 import cards.backend.repository.CarRepository;
 import cards.backend.repository.OwnerRepository;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,12 @@ public class Application implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Owner owner1 = new Owner("John" , "Johnson");
  		Owner owner2 = new Owner("Mary" , "Robinson");
-		ownerRepository.saveAll(Arrays.asList(owner1, owner2));
+		
+		List<Owner> owners = new ArrayList<>();
+		owners.add(owner1);
+    	owners.add(owner2);
+        ownerRepository.saveAll(owners);
+
 		
 		carRepository.save(new Car("Ford", "Mustang", "Red",
 				"ADF-1121", 2023, 59000, owner1));
