@@ -21,13 +21,16 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationFilter authenticationFilter;
+    private final AuthEntryPoint exceptionHandler;
 
     public SecurityConfig(
         UserDetailsServiceImpl userDetailsService,
-        AuthenticationFilter authenticationFilter
+        AuthenticationFilter authenticationFilter,
+        AuthEntryPoint exceptionHandler
         ) {
         this.userDetailsService = userDetailsService;
         this.authenticationFilter = authenticationFilter;
+        this.exceptionHandler=exceptionHandler;
     }
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -47,7 +50,9 @@ public class SecurityConfig {
             .anyRequest().authenticated())
             .addFilterBefore(
                 authenticationFilter, UsernamePasswordAuthenticationFilter.class
-                );
+                )
+            .exceptionHandling((exceptionHandling) -> exceptionHandling.
+                authenticationEntryPoint(exceptionHandler));
         return http.build();
     }
 
