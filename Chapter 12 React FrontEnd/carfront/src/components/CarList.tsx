@@ -1,7 +1,7 @@
 // Carlist.tsx
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { DataGrid, GridColDef, GridCellParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridCellParams,  GridToolbar } from "@mui/x-data-grid";
 import Snackbar from "@mui/material/Snackbar";
 import { getCars, deleteCar } from "../api/carapi";
 import AddCar from "./AddCar";
@@ -82,6 +82,7 @@ function Carlist() {
           columns={columns}
           disableRowSelectionOnClick={true}
           getRowId={(row) => row._links.self.href}
+          slots={{ toolbar: GridToolbar }}
         />
         <Snackbar
           open={open}
